@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import BookTable from './components/BookTable';
+import TodoTable from './components/TodoTable';
 import DisplayBoard from './components/DisplayBoard';
 import CreateBook from './components/CreateBook';
-import { getAllBooks, createBook } from './services/BookService';
+import CreateTodo from './components/CreateTodo';
+import { getAllBooks, createBook, createTodos, getAllTodos} from './services/BookService';
 import Footer from './components/Footer';
 
-function App () {
 
+function App () {
   const [bookShelf, setBookShelf] = useState({});
+  const [myTodo, setMyTodo] = useState({});
   const [books, setBooks] = useState([]);
   const [numberOfBooks, setNumberBooks] = useState(0);
+  const [todos, setTodos] = useState([]);
+  const [numberOfTodos, setNumberOfTodos] = useState(0);
 
   const handleSubmit = () => {
       createBook(bookShelf)
@@ -20,6 +25,13 @@ function App () {
       });
   }
 
+  const handleTodoSubmit = () => {
+    createTodos(myTodo)
+      .then(() => {
+        setNumberOfTodos(numberOfTodos+1);
+    });
+}
+
   const getAllBook = () => {
     getAllBooks()
       .then(data => {
@@ -27,6 +39,16 @@ function App () {
         setNumberBooks(data.length);
       });
   }
+
+  const getAllTodo = () => {
+    getAllTodos()
+      .then(data => {
+        console.log(data)
+        setTodos(data);
+        setNumberOfTodos(data.length);
+      });
+  }
+
 
   const handleOnChangeForm = (e) => {
       let inputData = bookShelf;
@@ -40,21 +62,45 @@ function App () {
       setBookShelf(inputData);
   }
 
+  const handleOnChangeTodoForm = (e) => {
+    let inputData = myTodo;
+    if (e.target.name === 'todo') {
+      myTodo.todo = e.target.value;
+    } else if (e.target.name === 'category') {
+      myTodo.category = e.target.value;
+    } else if (e.target.name === 'isComplete') {
+      myTodo.isComplete = e.target.value;
+    }
+    setMyTodo(inputData);
+}
+
+  
+
   
   return (
     <div className="main-wrapper">
       <div className="main">
         <Header />
+        <div className='handel_form'>
         <CreateBook 
           bookShelf={bookShelf}
           onChangeForm={handleOnChangeForm}
           handleSubmit={handleSubmit}
         />
+        <CreateTodo 
+        myTodo={myTodo}
+        onChangeForm={handleOnChangeTodoForm}
+        handleSubmit={handleTodoSubmit}
+        />
+        </div>
         <DisplayBoard 
           numberOfBooks={numberOfBooks} 
-          getAllBook={getAllBook} 
+          getAllBook={getAllBook}
+          getAllTodo={getAllTodo} 
+          numberOfTodos={numberOfTodos}
         />
         <BookTable books={books} />
+        <TodoTable todos={todos} />
         <Footer />
       </div>
     </div>
