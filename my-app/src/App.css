@@ -19,6 +19,11 @@ body, html {
   padding-top: 3rem;
 }
 
+.section {
+  display: flex; 
+  justify-content: center;  
+}
+
 .header {
   width: 100%;
   padding: 2%;
@@ -85,6 +90,7 @@ body, html {
   border-color: rgb(203, 218, 255); 
   box-shadow: 0 0 5px rgb(203, 218, 255); 
 }
+
 
 button {
   height: 40px;
