@@ -1,5 +1,3 @@
-# react-proxy-example
-This is an example project on how to proxy to backend servers in React Applications
 # My Todo App
 
 Todo 관리를 위한 웹 애플리케이션입니다.
